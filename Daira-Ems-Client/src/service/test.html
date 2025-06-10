@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Participant Card</title>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.4.4/build/qrcode.min.js"></script>
+    <style>
+      .card-wrapper {
+        display: flex;
+        flex-wrap: wrap;
+        margin: 0 auto;
+        max-width: 250mm;
+      }
+      .card-container {
+        font-family: 'Arial', sans-serif;
+        width: calc(100% / 3 - 20px);
+        margin: 5px;
+        border: 1px solid #000;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 89mm;
+      }
+      .card-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 10px;
+        padding: 5px;
+      }
+      .title {
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-top: 10px;
+      }
+      .qr-code {
+        width: 70px !important;
+        height: 70px !important;
+        margin-bottom: 10px;
+      }
+      .participant-info {
+        text-align: center;
+        padding: 10px;
+      }
+      .name,
+      .event,
+      .id {
+        margin-bottom: 4px;
+        margin-top: 4px;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .institution,
+      .cnic {
+        margin-bottom: 4px;
+        margin-top: 4px;
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card-wrapper">
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const participants = [
+            {
+              name: 'Muhammad Asghar',
+              institution: 'Government College University Faisalabad Campus',
+              cnic: '3410423310558',
+              event: 'Event Name',
+              id: '0123342342342340',
+            },
+          ];
+          participants.forEach((participant, index) => {
+            const cardContainer = document.createElement('div');
+            cardContainer.className = 'card-container';
+            cardContainer.innerHTML = `
+            <div class="card-header">
+              <img src="../../public/dairaSVG.svg" alt="Daira Logo" style="width: 60px" />
+              <h4 class="title">Participant Card</h4>
+            </div>
+           <canvas id="qr-code-${index}" class="qr-code"></canvas>
+
+            <div class="participant-info">
+              <div class="name">${participant.name}</div>
+              <div class="institution">${participant.institution}</div>
+              <div class="cnic">${participant.cnic}</div>
+              <div class="event">${participant.event}</div>
+              <div class="id">${participant.id}</div>
+            </div>
+          `;
+            document.querySelector('.card-wrapper').appendChild(cardContainer);
+            const qrCanvas = document.getElementById(`qr-code-${index}`);
+            const res = QRCode.toCanvas(
+              qrCanvas,
+              JSON.stringify(participant),
+              {
+                width: 200,
+                height: 200,
+              },
+              function (error) {
+                if (error) console.error('Error generating QR code:', error);
+              }
+            );
+            console.log(res);
+          });
+        });
+      </script>
+    </div>
+  </body>
+</html>
